@@ -5,3 +5,5 @@ esempio di come aprire la connessione da arduino trovarne l'ip e connettersi da 
 video che potrebbe essere utile sul wifi direct con un esp https://www.youtube.com/watch?v=OdEmfRKDJts
 
 articolo sul wifidirect su arduino https://hackaday.io/project/11734-1sheeld-in-0/log/38145-implementing-wifi-direct-in-arduino-library-wifi101
+
+articolo in cui ci dovrebbe essere tutto quello che ci serve https://www.instructables.com/ESP8266-Direct-Data-Communication/
