@@ -1,3 +1,5 @@
 esempio connection android-arduino on github https://github.com/ayoubElhoucine/Connect-Android-to-Arduino-via-Wifi/blob/master/README.md
 
 esempio di come aprire la connessione da arduino trovarne l'ip e connettersi da android, progetto on project hub
+
+video che potrebbe essere utile sul wifi direct con un esp https://www.youtube.com/watch?v=OdEmfRKDJts
