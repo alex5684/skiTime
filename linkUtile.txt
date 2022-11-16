@@ -1,0 +1,1 @@
+esempio connection android-arduino on github https://github.com/ayoubElhoucine/Connect-Android-to-Arduino-via-Wifi/blob/master/README.md
