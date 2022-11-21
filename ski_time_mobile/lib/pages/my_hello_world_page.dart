@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ski_time_mobile/pages/secondPage.dart';
 
 class MyHelloWorldPage extends StatefulWidget {
   @override
@@ -11,26 +13,25 @@ class _MyHelloWorldState extends State<MyHelloWorldPage> {
   BehaviorSubject<String> _emailController = BehaviorSubject();
   BehaviorSubject<String> _passwordController = BehaviorSubject();
 
-
-  final _validateEmail = StreamTransformer<String, String>.fromHandlers(
-      handleData: (email, sink) {
-        if (RegExp(
+  final _validateEmail =
+      StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
+    if (RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-            .hasMatch(email)) {
-          sink.add(email);
-        } else {
-          sink.addError('email non valida');
-        }
-      });
+        .hasMatch(email)) {
+      sink.add(email);
+    } else {
+      sink.addError('email non valida');
+    }
+  });
 
   final _validatePassword = StreamTransformer<String, String>.fromHandlers(
       handleData: (password, sink) {
-        if (password.length >= 6) {
-          sink.add(password);
-        } else {
-          sink.addError('password troppo corta');
-        }
-      });
+    if (password.length >= 6) {
+      sink.add(password);
+    } else {
+      sink.addError('password troppo corta');
+    }
+  });
 
   Stream<String> get _emailStream =>
       _emailController.stream.transform(_validateEmail);
@@ -63,8 +64,7 @@ class _MyHelloWorldState extends State<MyHelloWorldPage> {
     );
   }
 
-  Widget _email() =>
-      StreamBuilder(
+  Widget _email() => StreamBuilder(
         stream: _emailStream,
         builder: (context, snapshot) {
           return Padding(
@@ -82,33 +82,33 @@ class _MyHelloWorldState extends State<MyHelloWorldPage> {
         },
       );
 
-  Widget _password() =>
-      StreamBuilder(
-          stream: _passwordStream,
-          builder: (context, snapshot) {
-            return Padding(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                  labelText: 'Password',
-                  errorText: snapshot.hasError ? '${snapshot.error}' : null,
-                ),
-                obscureText: true,
-                onChanged: _passwordController.sink.add,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            );
-          });
-
-  Widget _loginButton() =>
-      StreamBuilder(stream: _loginButtonStream, builder: (context, snapshot) {
+  Widget _password() => StreamBuilder(
+      stream: _passwordStream,
+      builder: (context, snapshot) {
         return Padding(
-          padding: EdgeInsets.all(8),
-          child: ElevatedButton(
-            onPressed:
-              snapshot.data==true ? () {} : null,
-            child: Text('Login'),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Password',
+              labelText: 'Password',
+              errorText: snapshot.hasError ? '${snapshot.error}' : null,
+            ),
+            obscureText: true,
+            onChanged: _passwordController.sink.add,
           ),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         );
-      },);
+      });
+
+  Widget _loginButton() => StreamBuilder(
+        stream: _loginButtonStream,
+        builder: (context, snapshot) {
+          return Padding(
+            padding: EdgeInsets.all(8),
+            child: ElevatedButton(
+              onPressed: snapshot.data == true ? () => context.go('/details') : null ,
+              child: Text('Login'),
+            ),
+          );
+        },
+      );
 }
