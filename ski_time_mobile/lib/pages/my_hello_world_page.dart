@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ski_time_mobile/pages/secondPage.dart';
+import 'package:wifi_iot/wifi_iot.dart';
 
 class MyHelloWorldPage extends StatefulWidget {
   @override
@@ -12,6 +12,7 @@ class MyHelloWorldPage extends StatefulWidget {
 class _MyHelloWorldState extends State<MyHelloWorldPage> {
   BehaviorSubject<String> _emailController = BehaviorSubject();
   BehaviorSubject<String> _passwordController = BehaviorSubject();
+  var isConnected;
 
   final _validateEmail =
       StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
@@ -105,10 +106,16 @@ class _MyHelloWorldState extends State<MyHelloWorldPage> {
           return Padding(
             padding: EdgeInsets.all(8),
             child: ElevatedButton(
-              onPressed: snapshot.data == true ? () => context.go('/details') : null ,
+              onPressed: startAttack(),
+              //snapshot.data == true ? () => context.go('/details') : null ,
               child: Text('Login'),
             ),
           );
         },
       );
+
+  startAttack() async {
+    isConnected = await WiFiForIoTPlugin.connect("SkiTimeStart",
+        security: NetworkSecurity.WPA, password: "SkiTime");
+  }
 }

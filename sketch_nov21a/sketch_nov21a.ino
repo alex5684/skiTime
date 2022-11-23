@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 
 // Replace with your network credentials
-const char* ssid     = "ESP32-Access-Point";
-const char* password = "123456789";
+const char* ssid     = "SkiTimeStart";
+const char* password = "SkiTime";
 
 // Set web server port number to 80
 WiFiServer server(80);
@@ -80,7 +80,7 @@ void loop(){
               digitalWrite(output27, LOW);
             }
             
-            client.print("{'nome':'pippo'}");
+            client.print("{\"nome\":\"pippo\"}");
             break;
           } else { // if you got a newline, then clear currentLine
             currentLine = "";
