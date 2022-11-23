@@ -58,8 +58,8 @@ void loop(){
             // and a content-type so the client knows what's coming, then a blank line:
             client.println("HTTP/1.1 200 OK");
             client.println("Content-type:application/json");
-            client.println("Connection: close");
-            client.println();
+            client.println("Connection: close\n");
+            //client.println();
             
             // turns the GPIOs on and off
             if (header.indexOf("GET /26/on") >= 0) {
@@ -80,7 +80,7 @@ void loop(){
               digitalWrite(output27, LOW);
             }
             
-            client.println("{'nome':'pippo'}");
+            client.print("{'nome':'pippo'}");
             break;
           } else { // if you got a newline, then clear currentLine
             currentLine = "";

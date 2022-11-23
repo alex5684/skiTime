@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_text_view/flutter_native_text_view.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class secondPage extends StatefulWidget {
   @override
@@ -7,72 +8,65 @@ class secondPage extends StatefulWidget {
 }
 
 class _secondPage extends State<secondPage> {
+  late Future<Album> futureAlbum;
+
   @override
   void initState() {
     super.initState();
-    getData();
+    futureAlbum = fetchAlbum();
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}
-
-class MyHelloWorldPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _MyHelloWorldState();
-}
-
-const String risposta = "";
-
-class _MyHelloWorldState extends State<MyHelloWorldPage> {
-  List<Post>? posts;
-  var isLoaded=false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Posts'),
-        ),
-        body: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return Container(
-                child: Text('hi'),
-              );
-            }));
-  }
+      body: Column(
+        children: [
+          Padding(
+            child: FutureBuilder<Album>(
+              future: futureAlbum,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(snapshot.data!.title);
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
 
-  Widget _loginButton() => StreamBuilder(
-        builder: (context, snapshot) {
-          return Padding(
-            padding: EdgeInsets.all(8),
-            child: ElevatedButton(
-              onPressed: _httpRequest(),
-              child: Text('Login'),
+                // By default, show a loading spinner.
+                return const CircularProgressIndicator();
+              },
             ),
-          );
-        },
-      );
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-Widget _textView() => StreamBuilder(
-      builder: (context, snapshot) {
-        return Padding(
-          padding: EdgeInsets.all(8),
-          child: NativeTextView(
-            risposta,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black54,
-            ),
-          ),
-        );
-      },
+Future<Album> fetchAlbum() async {
+  final response = await http.get(Uri.parse('http://192.168.4.1'));
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return Album.fromJson(jsonDecode(response.body));
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
+  }
+}
+
+class Album {
+  final String title;
+
+  const Album({
+    required this.title,
+  });
+
+  factory Album.fromJson(Map<String, dynamic> json) {
+    return Album(
+      title: json['nome'],
     );
-
-_httpRequest() {}
-
-getData() async {}
+  }
+}
